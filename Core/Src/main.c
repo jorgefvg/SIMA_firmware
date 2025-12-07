@@ -29,6 +29,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "API_delay.h"
+#include "API_lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -38,7 +39,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define LED_TIME 3000
+#define LED_TIME 4000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -98,10 +99,15 @@ int main(void) {
     MX_USART1_UART_Init();
     MX_USART3_UART_Init();
     MX_USB_OTG_FS_PCD_Init();
+    MX_I2C1_Init();
     /* USER CODE BEGIN 2 */
     API_DELAY_Init(&led_delay, LED_TIME);
+    API_LCD_Init();
     /* USER CODE END 2 */
-
+    API_LCD_CursorPosition(0, 0);
+    API_LCD_WriteText("Cargando ...");
+    HAL_Delay(2000);
+    API_LCD_CleanScreen();
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
@@ -111,6 +117,13 @@ int main(void) {
         if (API_DELAY_Read(&led_delay)) {
             HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
         }
+
+        API_LCD_CursorPosition(0, 0);
+        API_LCD_WriteText("Proyecto");
+        API_LCD_CursorPosition(1, 0);
+        API_LCD_WriteText("SIMA v");
+        API_LCD_CursorPosition(1, 6);
+        API_LCD_WriteNumber(1);
     }
     /* USER CODE END 3 */
 }
