@@ -1,129 +1,93 @@
-## 📘 Documentación del código
+# Sistema de Monitoreo Ambiental Inteligente (SIMA)
 
-### 🔧 Requisitos previos
+Proyecto de **sistemas embebidos** desarrollado sobre la placa **STM32 B-L475E-IOT01**, orientado al monitoreo ambiental inteligente. Este repositorio contiene el firmware del sistema, así como herramientas de automatización, pruebas unitarias y documentación técnica.
 
-Para comenzar a trabajar con este proyecto en C para STM32, es necesario instalar las siguientes herramientas:
+El objetivo del proyecto es construir una base escalable y bien estructurada para integrar sensores, procesamiento de datos y futuras funcionalidades (por ejemplo, conectividad o inteligencia artificial embebida).
+
+## 📁 Estructura del repositorio
+
+```
+Estructura del proyecto:
+SIMA_FIRMWARE/
+│
+├── .github/workflows/        ← Configuración de GitHub Actions para integración continua.
+|                               Incluyendo verificación de formato del código y ejecución de pruebas unitarias.
+|
+├── .settings/                ← Archivos de configuración interna del proyecto en STM32CubeIDE.
+|
+├── .vscode/                  ← Archivo que le indica a vscode como aplicar formato con clang-format.
+|
+├── Core/                     ← Contiene el código base del firmware generado y gestionado por STM32CubeIDE.
+|   └─/Inc                    ← Archivos de cabecera principales del proyecto STM32.
+|   └─/Src                    ← Incluye main.c y la configuración de los periféricos.
+|   └─/Startup                ← Archivos de arranque y configuración inicial del microcontrolador.
+|
+└── Drivers/                  ← Implementa la lógica de la aplicación SIMA.
+|   └─/API                    ← Contiene los archivos `.c` y `.h` de la aplicacion.
+|   └─/CMSIS                  ← Librerías CMSIS proporcionadas por ARM.
+|   └─/STM32L4xx_HAL_Driver   ← Librerías HAL de STMicroelectronics para la familia STM32L4.
+|
+├── Documentos/               ← Documentación técnica del proyecto.
+|
+└── test/                     ← Carpeta destinada a pruebas unitarias con la herramienta Ceedling.
+```
 
 ---
 
-### 1. **Clang-Format**
+## 📄 Archivos de configuración importantes
 
-- Descarga **Clang-Format** desde la página oficial de LLVM:
-  [https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.8](https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.8)
-- En este proyecto se utilizó la versión **LLVM-18.1.8-win64.exe**.
-- Se recomienda instalar la extensión de **VS Code**:
-  **Clang-Format** — desarrollada por *Xaver Hellauer*.
-  Esta extensión permite aplicar formato automáticamente al guardar los archivos fuente.
+* **.clang-format**
+  Define las reglas de formato del código fuente.
 
----
+* **.pre-commit-config.yaml**
+  Configura validaciones automáticas que se ejecutan antes de cada *commit* o *push*.
 
-### 2. **Pre-commit**
+* **project.yml**
+  Archivo de configuración del proyecto **Ceedling** para pruebas unitarias.
 
-- Para usar **pre-commit** en Windows es necesario tener instalados **Python**, **pip** y **Git**, y asegurarse de que estén agregados al **PATH** del sistema.
-- Luego, desde la terminal (CMD o PowerShell), instala pre-commit con "pip install pre-commit"
-- En este proyecto se utilizó la versión pre-commit 4.3.0.
-- También se recomienda instalar la extensión de VS Code:
-  GitHub Actions, para ejecutar automáticamente los hooks de pre-commit cada vez que se haga un pull request a la rama main.
+* **doxyfile**
+  Configuración para generar documentación automática con **Doxygen**.
 
 ---
 
-### 3. **Doxygen**
+## 📄 Archivos generados por STM32CubeIDE
 
-- Descarga e instala Doxygen desde: [https://www.doxygen.nl/download.html](https://www.doxygen.nl/download.html)
-- Agrega Doxygen al PATH del sistema para poder ejecutarlo desde la terminal.
-- En VS Code se puede utilizar la extensión:
-  Doxygen Documentation Generator — desarrollada por Christoph Schlosser, que facilita la creación de comentarios compatibles con Doxygen.
-- En el archivo doxyfile se pueden cambiar las configuraciones de como queremos la documentacion, por ejemplo lo que mas nos interesa es las opciones de documentacion:
-  Le indicamos en que carpeta queremos que se genere la documentacion, para esto hay que crear una carpeta de forma local en la pc, como por ejemplo:
-  OUTPUT_DIRECTORY       = build/doc
-  Le indicamos en que carpetas se encuentra el codigo a documentar
-  - INPUT                  = Drivers/API/Inc
-  Le indicamos que carpetas o archivos se deben de excluir en la generacion de la documentacion
-  - EXCLUDE                = build
-  Entre otras opciones mas revisar el archivo doxifile y cambiar lo que sea necesario.
----
+* **.project / .cproject / .mxproject**
+  Archivos internos del proyecto generados por STM32CubeIDE.
 
-### 4. **Ceedling**
-Para realizar testing unitario se utiliza la herramienta Ceedling.
-Esta no está disponible directamente en Windows, pero puede instalarse fácilmente a través de WSL (Ubuntu).
+* **SIMA_firmware.ioc**
+  Archivo principal de configuración del proyecto en CubeIDE (pines, clocks, periféricos, middleware).
 
-Instalación:
+* **SIMA_firmware.launch**
+  Configuración de lanzamiento y depuración del proyecto en el entorno de desarrollo.
 
-Ejecuta los siguientes comandos dentro de la terminal de WSL:
-- Instalación de Ruby (requerido por Ceedling) y Gcovr (para reportes de cobertura)
+* **STM32L475VGTX_FLASH.ld**
+  Script de *linker* para la memoria Flash del microcontrolador.
 
-  sudo apt-get install ruby gcovr
-
-- Instalación de Ceedling mediante RubyGems
-
-  sudo gem install ceedling
-
-Dentro del repositorio, puedes crear un nuevo proyecto de Ceedling de dos formas:
-- Crear un proyecto en una nueva carpeta:
-
-  ceedling new "nombre_carpeta"
-
-- Crear el proyecto en la carpeta actual:
-
-  ceedling new .
-
-Estos comandos generan automáticamente las carpetas y archivos por defecto:
-
-  src/
-
-  test/support/
-
-  project.yml
-
-Nota importante: en este repositorio ya existe el archivo project.yml, por lo que no es necesario crear un nuevo proyecto Ceedling. Simplemente coloca tus archivos de prueba dentro de la carpeta test/ — no deben crearse en otra ubicación. Tambien es importante revisar que dentro de la carpeta support se cree un archivo llamado .gitkeep (este archivo queda vacio), esto para que la carpeta test se guarde en el repo.
+* **STM32L475VGTX_RAM.ld**
+  Script de *linker* para la memoria RAM del microcontrolador.
 
 ---
 
-### 5. **PlantUML**
-Es una herramineta para generar diagramas UML apartir de texto.
-Se necesita tener instalado Java para generar los diagramas de UML con PlantUML.
-- Para tener Java se puede descargar [Temurin](https://adoptium.net/) que es una distribución oficial y gratuita de Java (OpenJDK) mantenida por la fundación Eclipse.
-En este proyecto se descargo la version:
-openjdk version "25.0.1" 2025-10-21 LTS
-- Descargar [plantuml.jar](https://plantuml.com/es/download#google_vignette) y guardalo en una carpeta.
-En este proyecto se instalo la version plantuml-1.2025.10.jar.
-- En el archivo doxyfile debemos de agregar la ruta en donde guardamos el archivo plantuml.jar, por ejemplo:
-  PLANTUML_JAR_PATH      = /Users/jorgevasquez/Desktop/PlantUML/plantuml.jar
+## 📘 Documentación adicional
+
+* **Requisitos_previos.md**
+  Lista de herramientas necesarias para trabajar con el proyecto (STM32CubeIDE, Ceedling, clang-format, etc.).
+
+* **Uso_del_repositorio.md**
+  Describe el flujo de trabajo recomendado, buenas prácticas y pasos para contribuir al proyecto.
 
 ---
 
-## Uso del repositorio
+## 🚀 Estado del proyecto
 
-Este repositorio utiliza las siguientes herramientas:
+El proyecto se encuentra en **desarrollo activo**. De forma incremental se irán agregando nuevos módulos `.c` y `.h` en la carpeta `Drivers/API`, conforme se implementen las distintas funcionalidades soportadas por la placa B-L475E-IOT01.
 
-1. [clang-format](https://clang.llvm.org/docs/ClangFormat.html) para el mantenimiento de formato del código escrito en lenguaje C
-2. [pre-commit](https://pre-commit.com) para validaciones generales de formato del repositorio
-3. [ceedling](https://www.throwtheswitch.org/ceedling) para ejecutar las pruebas unitarias en forma automatizada
-4. [lcov]() para generar los informes de cobertura de las pruebas unitarias
+---
 
-Después de clonar el repositorio usted debería ejecutar el siguiente comando:
+## 👤 Autor
 
-```
-pre-commit install
-```
+**Jorge F. Vasquez**
+Ingeniero Electricista Industrial – Especialidad en Sistemas Embebidos
 
-Para ejecutar las pruebas unitarias se utiliza el siguiente comando:
-
-```
-ceedling test:all
-```
-
-Para generar el informe de cobertura de las pruebas se utiliza el siguiente comando:
-
-```
-ceedling clobber gcov:all
-```
-
-Para generar la documentación del proyecto se utiliza el siguiente comando:
-
-```
-doxygen doxyfile
-
-```
-
-Nota: Los reportes de cobertura por defecto se guardan en la carpeta build/artifacts/gcov/gcovr/GcovCoverageCobertura.html y los reportes de test se guardan en la carpeta build/artifacts/gcov/junit_tests_report.html. La documentacion con doxygen se guarda en la carpeta build/doc/html/index.html.
+---
