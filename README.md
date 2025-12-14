@@ -1,8 +1,15 @@
 # Sistema de Monitoreo Ambiental Inteligente (SIMA)
 
-Proyecto de **sistemas embebidos** desarrollado sobre la placa **STM32 B-L475E-IOT01**, orientado al monitoreo ambiental inteligente. Este repositorio contiene el firmware del sistema, así como herramientas de automatización, pruebas unitarias y documentación técnica.
+SIMA es un proyecto de **sistemas embebidos** desarrollado sobre la placa **STM32 B-L475E-IOT01A**, orientado al monitoreo inteligente de variables ambientales. La versión más reciente de la documentación del diseño se encuentra disponible en este [sitio web](https://jorgefvg.github.io/SIMA_documentation/).
 
-El objetivo del proyecto es construir una base escalable y bien estructurada para integrar sensores, procesamiento de datos y futuras funcionalidades (por ejemplo, conectividad o inteligencia artificial embebida).
+El sistema integra un **modelo de Inteligencia Artificial embebido**, ejecutado directamente en el microcontrolador, capaz de realizar inferencias en tiempo real.
+Actualmente, el firmware implementa un modelo entrenado con el dataset **Iris**, utilizado como caso de prueba para la clasificación de especies de flores (Setosa, Versicolor y Virginica) a partir de datos de entrada.
+
+El repositorio incluye:
+- Firmware en lenguaje **C** para microcontroladores STM32
+- Integración de un modelo de IA convertido de **Python a C** mediante STM32Cube.AI
+- Arquitectura de firmware modular y escalable
+- Pruebas unitarias, herramientas de automatización y documentación técnica
 
 ## 📁 Estructura del repositorio
 
@@ -10,6 +17,8 @@ El objetivo del proyecto es construir una base escalable y bien estructurada par
 Estructura del proyecto:
 SIMA_FIRMWARE/
 │
+├── .ai/                      ← Archivo de configuracion que permite al IDE gestionar el modelo de IA.
+|
 ├── .github/workflows/        ← Configuración de GitHub Actions para integración continua.
 |                               Incluyendo verificación de formato del código y ejecución de pruebas unitarias.
 |
@@ -27,9 +36,13 @@ SIMA_FIRMWARE/
 |   └─/CMSIS                  ← Librerías CMSIS proporcionadas por ARM.
 |   └─/STM32L4xx_HAL_Driver   ← Librerías HAL de STMicroelectronics para la familia STM32L4.
 |
+├── Middlewares/ST/AI         ← Capa que permite que el modelo en C se ejecute sobre el hardware STM32.
+|
 ├── Documentos/               ← Documentación técnica del proyecto.
 |
-└── test/                     ← Carpeta destinada a pruebas unitarias con la herramienta Ceedling.
+├── test/                     ← Carpeta destinada a pruebas unitarias con la herramienta Ceedling.
+|
+└── X-CUBE-AI/                ← Incluye los archivos del modelo convertido a C (network.c, network_data.c, etc.).
 ```
 
 ---
