@@ -86,10 +86,10 @@ SIMA_FIRMWARE/
 
 ## 📘 Documentación adicional
 
-* **Requisitos_previos.md**
+- [Requisitos previos](PREREQUISITES.md)
   Lista de herramientas necesarias para trabajar con el proyecto (STM32CubeIDE, Ceedling, clang-format, etc.).
 
-* **Uso_del_repositorio.md**
+- [Uso del repositorio](USAGE.md)
   Describe el flujo de trabajo recomendado, buenas prácticas y pasos para contribuir al proyecto.
 
 ---
