@@ -5,6 +5,8 @@ SIMA es un proyecto de **sistemas embebidos** desarrollado sobre la placa **STM3
 El sistema integra un **modelo de Inteligencia Artificial embebido**, ejecutado directamente en el microcontrolador, capaz de realizar inferencias en tiempo real.
 Actualmente, el firmware implementa un modelo entrenado con el dataset **Iris**, utilizado como caso de prueba para la clasificación de especies de flores (Setosa, Versicolor y Virginica) a partir de datos de entrada.
 
+![iris_model_ia_embebida_stm32](https://github.com/user-attachments/assets/65982c61-aa31-4704-af7b-d1839fe4694a)
+
 El repositorio incluye:
 - Firmware en lenguaje **C** para microcontroladores STM32
 - Integración de un modelo de IA convertido de **Python a C** mediante STM32Cube.AI
